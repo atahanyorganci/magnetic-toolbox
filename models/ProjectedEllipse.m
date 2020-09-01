@@ -1,5 +1,6 @@
 classdef ProjectedEllipse
     properties
+        Start (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
         CylinderRadius (1,1) double {mustBeNumeric,mustBeReal, ...
             mustBeFinite,mustBePositive}
         Angle (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
@@ -13,7 +14,8 @@ classdef ProjectedEllipse
     end
     
     methods
-        function p = ProjectedEllipse(radius,angle)
+        function p = ProjectedEllipse(start,radius,angle)
+            p.Start = start;
             p.CylinderRadius = radius;
             p.Angle = angle;
         end
@@ -23,7 +25,7 @@ classdef ProjectedEllipse
         end
 
         function func = get.Func(p)
-            [x,y,z] = createParametricProjection(p.CylinderRadius,p.Angle);
+            [x,y,z] = createParametricProjection(p.Start,p.CylinderRadius,p.Angle);
             func = {x,y,z};
         end
 
