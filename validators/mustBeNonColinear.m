@@ -4,7 +4,13 @@ function mustBeNonColinear(a, b, c)
         b (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
         c (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
     end
-    if dist(a,b) == dist(a,c) + dist(b,c)
+    if abs(a-b) == abs(a-c) + abs(c-b)
+        error('Points must not be colinear.');
+    end
+    if abs(b-c) == abs(b-a) + abs(a-c)
+        error('Points must not be colinear.');
+    end
+    if abs(c-a) == abs(c-b) + abs(b-a)
         error('Points must not be colinear.');
     end
 end
