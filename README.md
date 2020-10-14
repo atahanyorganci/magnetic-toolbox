@@ -25,3 +25,7 @@ MATLAB version should be at least 2019a as the source repository uses argument v
 - **resources** contains automatically generated MATLAB project files.
 - **utilities** contains utility functions for creating function handles, and calculating magnetic field.
 - **validators** contains functions that are used validating that function arguments are colinear points, have the same length, etc.
+
+## Models
+
+Every model implementation follows the same pattern where each model can instantiated with required parameters, and can be visualized in 3D space with `plot3`, and magnetic field at any point in space can be calculated with `observe(observation_point)`.
