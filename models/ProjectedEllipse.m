@@ -1,20 +1,19 @@
 classdef ProjectedEllipse
     properties
-        Start (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
-        CylinderRadius (1,1) double {mustBeNumeric,mustBeReal, ...
-            mustBeFinite,mustBePositive}
-        Angle (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
-            mustBePositive}
+        Start (1,3) double {mustBeRealFinite}
+        CylinderRadius (1,1) double {mustBeRealFinite}
+        Angle (1,1) double {mustBeRealFinite}
     end
     
     properties (Dependent)
-        CircleRadius (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
-            mustBePositive}
+        CircleRadius (1,1) double {mustBeRealFinite,mustBePositive}
         Func
     end
     
     methods
         function p = ProjectedEllipse(start,radius,angle)
+            mustBePositive(radius);
+            mustBePositive(angle);
             p.Start = start;
             p.CylinderRadius = radius;
             p.Angle = angle;
@@ -49,9 +48,9 @@ classdef ProjectedEllipse
         function B_vec = observe(p,obs,sample_count)
             arguments
                 p (1,1) ProjectedEllipse
-                obs (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
-                sample_count (1,1) double {mustBeNumeric,mustBeReal, ...
-                    mustBeFinite,mustBeInteger,mustBePositive} = p.SampleCount
+                obs (1,3) double {mustBeRealFinite}
+                sample_count (1, 1) double {mustBeRealFinite, ...
+                    mustBeInteger, mustBePositive} = constants.sample_count
             end
             [x, y, z] = p.sample(sample_count);
             B_vec = calculateMagneticField(x, y, z, obs);

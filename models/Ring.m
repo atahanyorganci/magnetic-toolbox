@@ -1,15 +1,12 @@
 classdef Ring
     properties
-        Radius (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
-            mustBePositive}
-        Center (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
+        Radius (1,1) double {mustBeRealFinite}
+        Center (1,3) double {mustBeRealFinite}
     end
     
     properties (Access = private)
-        Start (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
-            mustBePositive}
-        Stop (1,1) double {mustBeNumeric,mustBeReal,mustBeFinite, ...
-            mustBePositive}
+        Start (1,1) double {mustBeRealFinite}
+        Stop (1,1) double {mustBeRealFinite}
     end
     
     properties (Constant)
@@ -23,7 +20,7 @@ classdef Ring
     methods
         function r = Ring(radius, center, start, stop)
             arguments
-                radius (1,1) double = 1;
+                radius (1,1) double {mustBePositive} = 1;
                 center (1,3) double = [0 0 0];
                 start (1,1) double = 0;
                 stop (1,1) double = 2*pi;
@@ -64,9 +61,9 @@ classdef Ring
         function B_vec = observe(r,obs,sample_count)
             arguments
                 r (1,1) Ring
-                obs (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
-                sample_count (1,1) double {mustBeNumeric,mustBeReal, ...
-                    mustBeFinite,mustBeInteger,mustBePositive} = r.SampleCount
+                obs (1,3) double {mustBeRealFinite}
+                sample_count (1, 1) double {mustBeRealFinite, ...
+                    mustBeInteger, mustBePositive} = constants.sample_count
             end
             [x, y, z] = r.sample(r.Start,r.Stop,sample_count);
             B_vec = calculateMagneticField(x, y, z, obs);

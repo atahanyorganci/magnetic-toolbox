@@ -1,21 +1,23 @@
 classdef Filament
+
     properties
-        Start (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
-        Stop (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
+        Start (1, 3) double {mustBeRealFinite}
+        Stop (1, 3) double {mustBeRealFinite}
     end
-    
+
     properties (Dependent)
         Func
     end
 
     methods
+
         function f = Filament(start, stop)
             f.Start = start;
             f.Stop = stop;
         end
-        
+
         function func = get.Func(f)
-            [Lx, Ly, Lz] = createParametricLine(f.Start,f.Stop);
+            [Lx, Ly, Lz] = createParametricLine(f.Start, f.Stop);
             func = {Lx Ly Lz};
         end
 
@@ -39,40 +41,50 @@ classdef Filament
             ylabel('y-axis')
         end
 
-        function B_vec = observe(f,obs,sample_count)
+        function B_vec = observe(f, obs, sample_count)
+
             arguments
-                f (1,1) Filament
-                obs (1,3) double {mustBeNumeric,mustBeReal,mustBeFinite}
-                sample_count (1,1) double {mustBeNumeric,mustBeReal, ...
-                    mustBeFinite,mustBeInteger,mustBePositive} = f.SampleCount
+                f (1, 1) Filament
+                obs (1, 3) double {mustBeNumeric, mustBeReal, mustBeFinite}
+                sample_count (1, 1) double {mustBeRealFinite, ...
+                                            mustBeInteger, ...
+                                            mustBePositive} = constants.sample_count
             end
-            mustBeNonColinear(f.Start,f.Stop,obs);
+
+            mustBeNonColinear(f.Start, f.Stop, obs);
             [x, y, z] = f.sample(sample_count);
             B_vec = calculateMagneticField(x, y, z, obs);
         end
+
     end
 
-    methods (Access=private)
-        function [x, y, z] = sample(f,sample_count)
+    methods (Access = private)
+
+        function [x, y, z] = sample(f, sample_count)
             delta = f.Stop - f.Start;
             t = linspace(0, 1, sample_count);
             lines = f.Func;
-            
+
             if (delta(1) == 0)
-                x = zeros(1,sample_count);
+                x = zeros(1, sample_count);
             else
                 x = lines{1}(t);
             end
+
             if (delta(2) == 0)
-                y = zeros(1,sample_count);
+                y = zeros(1, sample_count);
             else
                 y = lines{2}(t);
             end
+
             if (delta(3) == 0)
-                z = zeros(1,sample_count);
+                z = zeros(1, sample_count);
             else
                 z = lines{3}(t);
             end
+
         end
+
     end
+
 end

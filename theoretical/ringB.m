@@ -1,4 +1,5 @@
 function [B_vec] = ringB(a, rho, z)
+    %ringB calculates magnetic field of a unit cirlce in space
     const = constants.mu_zero / 2 / pi;
 
     k = 4 * a * rho / ((a + rho) ^ 2 + z ^ 2);
